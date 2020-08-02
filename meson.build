@@ -1,12 +1,12 @@
 project(
-    'io.github.jeremypw.bulk-renamer', 'vala', 'c',
+    'io.github.jeremypw.bulk-renamer-plugin', 'vala', 'c',
     meson_version : '>= 0.46',
     version: '1.0.0'
 )
 
 i18n = import('i18n')
 
-add_global_arguments('-DGETTEXT_PACKAGE="io.github.jeremypw.bulk-renamer"', language:'c')
+add_global_arguments('-DGETTEXT_PACKAGE="io.github.jeremypw.bulk-renamer-plugin"', language:'c')
 
 parent_project_name='io.elementary.files'
 

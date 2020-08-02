@@ -3,11 +3,10 @@ files_plugin_dir=join_paths(get_option('prefix'), get_option('libdir'), parent_p
 
 shared_module (
     meson.project_name(),
-#    'Application.vala',
     'BulkRenamer.vala',
     'Enums.vala',
     'Modifier.vala',
-    'Window.vala',
+    'RenamerDialog.vala',
     'plugin.vala',
     dependencies: [
         core_deps,
@@ -20,6 +19,6 @@ shared_module (
 )
 
 install_data(
-    'io.github.jeremypw.bulk-renamer.plug',
+    'io.github.jeremypw.bulk-renamer-plugin.plug',
     install_dir: files_plugin_dir,
 )

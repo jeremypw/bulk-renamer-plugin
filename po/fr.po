@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.jeremypw.bulk-renamer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-02 16:49+0100\n"
+"POT-Creation-Date: 2020-08-02 19:25+0100\n"
 "PO-Revision-Date: 2020-08-02 15:36+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -145,11 +145,11 @@ msgstr "Texte cible"
 msgid "Remove this modification"
 msgstr "Supprimer cette modification"
 
-#: src/Window.vala:43
+#: src/RenamerDialog.vala:41
 msgid "Cancel"
 msgstr "Fermer"
 
-#: src/Window.vala:46
+#: src/RenamerDialog.vala:43
 msgid "Rename"
 msgstr "Renommer"
 

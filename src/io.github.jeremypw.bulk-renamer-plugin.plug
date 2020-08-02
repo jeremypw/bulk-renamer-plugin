@@ -1,0 +1,3 @@
+[Plugin]
+Name=Bulk Renamer
+File=libio.github.jeremypw.bulk-renamer-plugin.so

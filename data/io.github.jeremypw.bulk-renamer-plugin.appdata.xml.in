@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-    <id>com.github.jeremypw.redub</id>
+    <id>io.github.jeremypw.bulk-renamer-plugin</id>
     <metadata_license>CC-BY-SA-3.0</metadata_license>
     <project_group>jeremypw</project_group>
     <project_license>GPL-3.0+</project_license>
@@ -66,7 +66,7 @@
         </release>
     </releases>
     <provides>
-        <binary>com.github.jeremypw.bulk-renamer</binary>
+        <library>io.github.jeremypw.bulk-renamer-plugin</library>
     </provides>
     <screenshots>
         <screenshot type="default">
@@ -76,9 +76,9 @@
     </screenshots>
 
     <developer_name>Jeremy Paul Wootten</developer_name>
-    <url type="homepage">https://github.com/jeremypw/bulk-renamer</url>
-    <url type="bugtracker">https://github.com/jeremypw/bulk-renamer/issues</url>
-    <url type="help">https://github.com/jeremypw/bulk-renamer</url>
+    <url type="homepage">https://github.com/jeremypw/bulk-renamer-plugin</url>
+    <url type="bugtracker">https://github.com/jeremypw/bulk-renamer-plugin/issues</url>
+    <url type="help">https://github.com/jeremypw/bulk-renamer-plugin</url>
     <update_contact>jeremywootten@gmail.com</update_contact>
 
     <custom>

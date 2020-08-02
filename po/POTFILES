@@ -1,5 +1,5 @@
 src/BulkRenamer.vala
 src/Enums.vala
 src/Modifier.vala
-src/Window.vala
+src/RenamerDialog.vala
 src/plugin.vala
