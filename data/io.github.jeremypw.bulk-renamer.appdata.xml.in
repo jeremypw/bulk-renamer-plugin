@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>com.github.jeremypw.redub</id>
+    <metadata_license>CC-BY-SA-3.0</metadata_license>
+    <project_group>jeremypw</project_group>
+    <project_license>GPL-3.0+</project_license>
+    <name>Bulk Renamer plugin</name>
+    <summary>Plugin for Files to rename multiple files according to one or more rules</summary>
+    <description>
+        <p>Adds menu option to rename selected files by applying on or more rules to the original name or to a new basename</p>
+        <ul>
+            <li>Add an index number with a chosen starting point and digits as a prefix or suffix</li>
+            <li>Add a date (current, creation or modification) as a prefix or suffix</li>
+            <li>Add or replace text</li>
+        </ul>
+        <p>A chosed separator may be inserted together with the new text.</p>
+    </description>
+    <content_rating type="oars-1.1">
+        <content_attribute id="violence-cartoon">none</content_attribute>
+        <content_attribute id="violence-fantasy">none</content_attribute>
+        <content_attribute id="violence-realistic">none</content_attribute>
+        <content_attribute id="violence-bloodshed">none</content_attribute>
+        <content_attribute id="violence-sexual">none</content_attribute>
+        <content_attribute id="violence-desecration">none</content_attribute>
+        <content_attribute id="violence-slavery">none</content_attribute>
+        <content_attribute id="violence-worship">none</content_attribute>
+        <content_attribute id="drugs-alcohol">none</content_attribute>
+        <content_attribute id="drugs-tobacco">none</content_attribute>
+        <content_attribute id="sex-nudity">none</content_attribute>
+        <content_attribute id="sex-themes">none</content_attribute>
+        <content_attribute id="sex-homosexuality">none</content_attribute>
+        <content_attribute id="sex-prostitution">none</content_attribute>
+        <content_attribute id="sex-adultery">none</content_attribute>
+        <content_attribute id="sex-appearance">none</content_attribute>
+        <content_attribute id="drugs-narcotics">none</content_attribute>
+        <content_attribute id="language-profanity">none</content_attribute>
+        <content_attribute id="language-humor">none</content_attribute>
+        <content_attribute id="language-discrimination">none</content_attribute>
+        <content_attribute id="money-purchasing">none</content_attribute>
+        <content_attribute id="money-gambling">none</content_attribute>
+        <content_attribute id="social-chat">none</content_attribute>
+        <content_attribute id="social-audio">none</content_attribute>
+        <content_attribute id="social-location">none</content_attribute>
+        <content_attribute id="social-contacts">none</content_attribute>
+        <content_attribute id="social-purchasing">none</content_attribute>
+        <content_attribute id="social-gambling">none</content_attribute>
+        <content_attribute id="social-info">none</content_attribute>
+    </content_rating>
+    <categories>
+        <category>Utility</category>
+    </categories>
+    <releases>
+        <release version="1.0.0" date="2020-11-12" urgency="low">
+            <description>
+                <p>Initial release as Files plugin</p>
+                <ul>
+                    <li>Use original name or a new constant name as a basis for renaming</li>
+                    <li>Add a number sequence, date or text before or after the basename</li>
+                    <li>Choose an arbitrary separator for new text</li>
+                    <li>Replace a specified part of the name with other text</li>
+                    <li>Apply several rules in sequences</li>
+                    <li>See the results before renaming</li>
+                    <li>Undo the last rename operation while dialog is open</li>
+                </ul>
+            </description>
+        </release>
+    </releases>
+    <provides>
+        <binary>com.github.jeremypw.bulk-renamer</binary>
+    </provides>
+    <screenshots>
+        <screenshot type="default">
+            <caption>Main Dialog</caption>
+            <image>https://raw.githubusercontent.com/jeremypw/bulk-renamer/master/data/Screenshots/mainwindow.png</image>
+        </screenshot>
+    </screenshots>
+
+    <developer_name>Jeremy Paul Wootten</developer_name>
+    <url type="homepage">https://github.com/jeremypw/bulk-renamer</url>
+    <url type="bugtracker">https://github.com/jeremypw/bulk-renamer/issues</url>
+    <url type="help">https://github.com/jeremypw/bulk-renamer</url>
+    <update_contact>jeremywootten@gmail.com</update_contact>
+
+    <custom>
+        <value key="x-appcenter-color-primary">#d4d4d4</value>
+        <value key="x-appcenter-color-primary-text">#180297</value>
+    </custom>
+</component>
