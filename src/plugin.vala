@@ -28,8 +28,6 @@ public class Marlin.Plugins.RenamerMenuItem : Gtk.MenuItem {
         this.files = files;
 
         label = _("Rename Selected Files");
-
-warning ("Menuitem has %u files", files.length);
     }
 
     public override void activate () {
@@ -51,9 +49,44 @@ public class Marlin.Plugins.BulkRenamer : Marlin.Plugins.Base {
         menu = widget as Gtk.Menu;
 
         File[] files = null;
-        if (gof_files == null) {
+        if (gof_files == null || gof_files.next == null) {
             return;
         }
+
+        /* We cannot assume all target files are in same folder (maybe recent folder in which case the view
+            passes the original locations.  We also do not want to batch rename mixtures of files and folders.
+        */
+        unowned List<GOF.File> remaining_files = gof_files.first ();
+        GLib.File? parent_folder = remaining_files.data.directory;
+        bool first_is_folder = remaining_files.data.is_folder ();
+        GLib. File? first_folder = parent_folder.dup ();
+        bool can_batch_rename = true;
+        while (can_batch_rename) {
+            remaining_files = remaining_files.next;
+            if (remaining_files == null) {
+                break;
+            }
+            parent_folder = remaining_files.data.directory;
+            can_batch_rename = parent_folder.equal (first_folder) &&
+                               remaining_files.data.is_folder () == first_is_folder;
+        }
+
+        if (!can_batch_rename) {
+            return;
+        }
+
+
+        FileInfo? info = null;
+        try {
+            info = parent_folder.query_info (FileAttribute.ACCESS_CAN_WRITE, FileQueryInfoFlags.NOFOLLOW_SYMLINKS);
+        } catch (Error e) {}
+
+        if (info != null && info.has_attribute (FileAttribute.ACCESS_CAN_WRITE)) {
+            if (!info.get_attribute_boolean (FileAttribute.ACCESS_CAN_WRITE)) {
+                return;
+            }
+        } // Else assume parent is writable and rely on error dialog.
+
 
         files = get_file_array (gof_files);
 

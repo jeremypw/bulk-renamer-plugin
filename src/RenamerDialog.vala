@@ -84,13 +84,6 @@ public class RenamerDialog : Gtk.Dialog {
                         response (Gtk.ResponseType.REJECT);
                     }
                     break;
-
-                case Gdk.Key.Z:
-                    if (only_control_pressed) {
-                        renamer.undo ();
-                    }
-
-                    break;
                 case Gdk.Key.Return:
                     if (mods == 0 && renamer.can_rename) {
                         response (Gtk.ResponseType.APPLY);

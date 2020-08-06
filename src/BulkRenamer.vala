@@ -25,7 +25,6 @@ public class Renamer : Gtk.Grid {
     private Gee.HashMap<string, File> file_map;
     private Gee.HashMap<string, FileInfo> file_info_map;
     private Gee.ArrayList<Modifier> modifier_chain;
-    private Gee.LinkedList<Gee.HashMap<string, string>> undo_stack;
 
     private Gtk.Grid modifier_grid;
     private Gtk.ListBox modifier_listbox;
@@ -46,7 +45,6 @@ public class Renamer : Gtk.Grid {
 
     public bool can_rename { get; set; default = false; }
 
-    public bool can_undo { get; set; }
     public string directory { get; private set; default = ""; }
 
     public Renamer (File[]? files = null) {
@@ -67,7 +65,6 @@ public class Renamer : Gtk.Grid {
         file_map = new Gee.HashMap<string, File> ();
         file_info_map = new Gee.HashMap<string, FileInfo> ();
         modifier_chain = new Gee.ArrayList<Modifier> ();
-        undo_stack = new Gee.LinkedList<Gee.HashMap<string, string>> ();
 
         var base_name_label = new Granite.HeaderLabel (_("Base"));
         base_name_label.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
@@ -282,7 +279,6 @@ public class Renamer : Gtk.Grid {
         Gtk.TreeIter? iter = null;
         foreach (unowned File f in files) {
             var path = f.get_path ();
-warning ("file path %s", path);
             var dir = Path.get_dirname (path);
             if (dir == directory) {
                 var basename = Path.get_basename (path);
@@ -303,7 +299,7 @@ warning ("file path %s", path);
                         file_info_map.@set (basename, info.dup ());
                         info_map_mutex.@unlock ();
                     } catch (Error e) {
-warning ("Error querying info %s", e.message);
+                        warning ("Error querying info %s", e.message);
                     }
                 });
 
@@ -362,14 +358,9 @@ warning ("Error querying info %s", e.message);
     }
 
     public void rename_files () {
-        var new_files = new File[number_of_files];
-        int index = 0;
-        var undo_map = new Gee.HashMap<string, string> ();
-
         old_list.@foreach ((m, p, i) => {
             string input_name = "";
             string output_name = "";
-            File? result = null;
             Gtk.TreeIter? iter = null;
             old_list.get_iter (out iter, p);
             old_list.@get (iter, 0, out input_name);
@@ -378,25 +369,15 @@ warning ("Error querying info %s", e.message);
             var file = file_map.@get (input_name);
 
             if (file != null) {
-                try {
-                    result = file.set_display_name (output_name);
-                    new_files[index++] = result;
-                    undo_map.@set (output_name, input_name);
-                } catch (GLib.Error e) {
-                    new_files[index++] = file;
-                    undo_map.@set (input_name, input_name);
-                }
+                    PF.FileUtils.set_file_display_name.begin (file, output_name, null, (obj, res) => {
+                        try {
+                            PF.FileUtils.set_file_display_name.end (res);
+                        } catch (Error e) {} // Warning dialog already shown
+                    });
             }
 
             return false; /* Continue iteration (compare HashMap iterator which is opposite!) */
         });
-
-        undo_stack.offer_head (undo_map);
-        can_undo = true;
-
-        replace_files (new_files);
-
-        reset ();
     }
 
     private uint view_update_timeout_id = 0;
@@ -522,47 +503,5 @@ warning ("Error querying info %s", e.message);
         }
 
         return res;
-    }
-
-    private void replace_files (File[] files) {
-        old_list.clear ();
-        new_list.clear ();
-        number_of_files = 0;
-        file_map.clear ();
-        file_info_map.clear ();
-
-        add_files (files);
-    }
-
-    public void undo () {
-        Gee.HashMap<string, string>? restore_map = undo_stack.poll_head ();
-        can_undo = undo_stack.size > 0;
-
-        if (restore_map == null) {
-            return;
-        }
-
-        var new_files = new File[restore_map.size];
-        var restore_iterator = restore_map.map_iterator ();
-        int index = 0;
-
-        restore_iterator.@foreach ((new_name, original_name) => {
-            File? result = null;
-            var path = Path.build_path (Path.DIR_SEPARATOR_S, directory, new_name);
-            var file = File.new_for_path (path);
-
-            if (file != null) {
-                try {
-                    result = file.set_display_name (original_name);
-                    new_files[index++] = result;
-                } catch (GLib.Error e) {
-                    new_files[index++] = file;
-                }
-            }
-
-            return true; /* Continue iteration */
-        });
-
-        replace_files (new_files);
     }
 }
