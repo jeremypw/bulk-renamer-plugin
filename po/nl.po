@@ -1,0 +1,159 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the io.github.jeremypw.bulk-renamer-plugin package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: io.github.jeremypw.bulk-renamer-plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-02 19:25+0100\n"
+"PO-Revision-Date: 2020-08-21 17:40+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.4.1\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl\n"
+
+#: src/BulkRenamer.vala:72
+msgid "Base"
+msgstr "Basis"
+
+#: src/BulkRenamer.vala:80
+msgid "Enter naming scheme"
+msgstr "Voer een naamsjabloon in"
+
+#: src/BulkRenamer.vala:88
+msgid "Sort by:"
+msgstr "Sorteren op:"
+
+#: src/BulkRenamer.vala:103
+msgid "Reverse"
+msgstr "Omgekeerd"
+
+#: src/BulkRenamer.vala:123
+msgid "Modifiers"
+msgstr "Wijzigingen"
+
+#: src/BulkRenamer.vala:131
+msgid "Add another modifier"
+msgstr "Wijziging toevoegen"
+
+#: src/BulkRenamer.vala:164
+msgid "Original Names"
+msgstr "Oorspronkelijke namen"
+
+#: src/BulkRenamer.vala:212
+msgid "New Names"
+msgstr "Nieuwe namen"
+
+#: src/Enums.vala:31
+msgid "Number sequence"
+msgstr "Reeks"
+
+#: src/Enums.vala:34
+msgid "Text"
+msgstr "Tekst"
+
+#: src/Enums.vala:37
+msgid "Date"
+msgstr "Datum"
+
+#: src/Enums.vala:53
+msgid "Suffix"
+msgstr "Bestandsextensie"
+
+#: src/Enums.vala:56
+msgid "Prefix"
+msgstr "Voorvoegsel"
+
+#: src/Enums.vala:59
+msgid "Replace"
+msgstr "Vervangen"
+
+#: src/Enums.vala:75
+msgid "Name"
+msgstr "Naam"
+
+#: src/Enums.vala:78
+msgid "Creation Date"
+msgstr "Aanmaakdatum"
+
+#: src/Enums.vala:81
+msgid "Last modification date"
+msgstr "Aanpassingsdatum"
+
+#: src/Enums.vala:99
+msgid "Default Format - Date only"
+msgstr "Standaardopmaak - alleen datum"
+
+#: src/Enums.vala:101
+msgid "Default Format - Date and Time"
+msgstr "Standaardopmaak - datum en tijd"
+
+#: src/Enums.vala:103
+msgid "Locale Format - Date and Time"
+msgstr "Opmaak in huidige taal - datum en tijd"
+
+#: src/Enums.vala:105
+msgid "ISO 8601 Format - Date only"
+msgstr "ISO 8601-opmaak - alleen datum"
+
+#: src/Enums.vala:107
+msgid "ISO 8601 Format - Date and Time"
+msgstr "ISO 8601-opmaak - datum en tijd"
+
+#: src/Enums.vala:121
+msgid "Current Date"
+msgstr "Huidige datum"
+
+#: src/Enums.vala:123
+msgid "Choose a date"
+msgstr "Kies een datum"
+
+#: src/Enums.vala:137
+msgid "Original filename"
+msgstr "Oorspronkelijke bestandsnaam"
+
+#: src/Enums.vala:139
+msgid "Enter a base name"
+msgstr "Voer een basisnaam in"
+
+#: src/Modifier.vala:62
+msgid "Start Number"
+msgstr "Beginnummer"
+
+#: src/Modifier.vala:67
+msgid "Digits"
+msgstr "Getallen"
+
+#: src/Modifier.vala:126
+msgid "Separator"
+msgstr "Scheidingsteken"
+
+#: src/Modifier.vala:128
+msgid "Separator:"
+msgstr "Scheidingsteken:"
+
+#: src/Modifier.vala:140
+msgid "Target text"
+msgstr "Doeltekst"
+
+#: src/Modifier.vala:164
+msgid "Remove this modification"
+msgstr "Deze aanpassing verwijderen"
+
+#: src/RenamerDialog.vala:41
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/RenamerDialog.vala:43
+msgid "Rename"
+msgstr "Naam wijzigen"
+
+#: src/plugin.vala:30
+msgid "Rename Selected Files"
+msgstr "Geselecteerde bestandsnamen wijzigen"
