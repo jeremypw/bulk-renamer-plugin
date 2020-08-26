@@ -23,8 +23,8 @@ public class Modifier : Gtk.ListBoxRow {
     private Gtk.ComboBoxText position_combo;
     private Gtk.ComboBoxText mode_combo;
     private Gtk.ComboBoxText date_format_combo;
-    private Gtk.ComboBoxText date_type_combo;
     private Granite.Widgets.DatePicker date_picker;
+    private Granite.Widgets.TimePicker time_picker;
     private Gtk.Stack mode_stack;
     private Gtk.Stack position_stack;
     private Gtk.SpinButton digits_spin_button;
@@ -33,7 +33,6 @@ public class Modifier : Gtk.ListBoxRow {
     private Gtk.Entry separator_entry;
     private Gtk.Entry search_entry;
     private Gtk.Revealer remove_revealer;
-    private Gtk.Revealer date_picker_revealer;
 
     public bool allow_remove { get; set; }
 
@@ -107,25 +106,16 @@ public class Modifier : Gtk.ListBoxRow {
         date_format_combo.insert (RenameDateFormat.ISO_DATETIME, "ISO_DATETIME",
                                   RenameDateFormat.ISO_DATETIME.to_string ());
 
-        date_type_combo = new Gtk.ComboBoxText () {
-            valign = Gtk.Align.CENTER
-        };
-        date_type_combo.insert (RenameDateType.NOW, "NOW", RenameDateType.NOW.to_string ());
-        date_type_combo.insert (RenameDateType.CHOOSE, "CHOOSE", RenameDateType.CHOOSE.to_string ());
-
         date_picker = new Granite.Widgets.DatePicker ();
-        date_picker_revealer = new Gtk.Revealer () {
-            reveal_child = false
-        };
-        date_picker_revealer.add (date_picker);
+        time_picker = new Granite.Widgets.TimePicker ();
 
         var date_time_grid = new Gtk.Grid () {
             orientation = Gtk.Orientation.HORIZONTAL,
             column_spacing = 6
         };
         date_time_grid.add (date_format_combo);
-        date_time_grid.add (date_type_combo);
-        date_time_grid.add (date_picker_revealer);
+        date_time_grid.add (date_picker);
+        date_time_grid.add (time_picker);
 
         mode_stack = new Gtk.Stack () {
             valign = Gtk.Align.CENTER,
@@ -212,14 +202,11 @@ public class Modifier : Gtk.ListBoxRow {
             update_request ();
         });
 
-        date_type_combo.changed.connect (() => {
-            date_picker_revealer.reveal_child = date_type_combo.get_active () == RenameDateType.CHOOSE;
-            if (date_type_combo.get_active () == RenameDateType.NOW) {
-                update_request ();
-            }
+        date_picker.date_changed.connect (() => {
+            update_request ();
         });
 
-        date_picker.date_changed.connect (() => {
+        time_picker.time_changed.connect (() => {
             update_request ();
         });
 
@@ -268,7 +255,7 @@ public class Modifier : Gtk.ListBoxRow {
         search_entry.text = "";
 
         date_format_combo.set_active (RenameDateFormat.DEFAULT_DATE);
-        date_type_combo.set_active (RenameDateType.NOW);
+//        date_type_combo.set_active (RenameDateType.NOW);
     }
 
     public Modifier (bool _allow_remove) {
@@ -322,20 +309,7 @@ public class Modifier : Gtk.ListBoxRow {
                 break;
 
             case RenameMode.DATETIME:
-                GLib.DateTime dt;
-                switch (date_type_combo.get_active ()) {
-                    case RenameDateType.NOW:
-                        dt = new GLib.DateTime.now_local ();
-                        break;
-                    case RenameDateType.CHOOSE:
-                        dt = date_picker.date;
-                        break;
-                    default:
-                        assert_not_reached ();
-                }
-
-                new_text = get_formated_date_time (dt);
-
+                new_text = get_formated_date_time (date_picker.date);
                 break;
 
             default:
@@ -359,23 +333,29 @@ public class Modifier : Gtk.ListBoxRow {
         return input;
     }
 
-    public string get_formated_date_time (DateTime? dt) {
+    public string get_formated_date_time (DateTime? date) {
+        var time = time_picker.time;
+        var date_time = new DateTime.utc (
+            date.get_year (), date.get_month (), date.get_day_of_month (),
+            time.get_hour (), time.get_minute (), time.get_second ()
+        );
+
         switch (date_format_combo.get_active ()) {
             case RenameDateFormat.DEFAULT_DATE:
-                return dt.format (Granite.DateTime.get_default_date_format (false, true, true));
+                return date_time.format (Granite.DateTime.get_default_date_format (false, true, true));
 
             case RenameDateFormat.DEFAULT_DATETIME:
-                return dt.format (Granite.DateTime.get_default_date_format (false, true, true).
+                return date_time.format (Granite.DateTime.get_default_date_format (false, true, true).
                                   concat (" ", Granite.DateTime.get_default_time_format ()));
 
             case RenameDateFormat.LOCALE:
-                return dt.format ("%c");
+                return date_time.format ("%c");
 
             case RenameDateFormat.ISO_DATE:
-                return dt.format ("%Y-%m-%d");
+                return date_time.format ("%Y-%m-%d");
 
             case RenameDateFormat.ISO_DATETIME:
-                return dt.format ("%Y-%m-%d %H:%M:%S");
+                return date_time.format ("%Y-%m-%d %H:%M:%S");
 
             default:
                 assert_not_reached ();
