@@ -185,23 +185,34 @@ public class Renamer : Gtk.Grid {
         old_files_grid.add (old_files_header);
         old_files_grid.add (old_scrolled_window);
 
-        var invalid_renderer = new Gtk.CellRendererPixbuf ();
-        invalid_renderer.xalign = 1.0f;
+        var invalid_renderer = new Gtk.CellRendererPixbuf () {
+            gicon = invalid_icon,
+            visible =false,
+            xalign = 1.0f
+        };
 
         var new_cell = new Gtk.CellRendererText ();
         new_cell.ellipsize = Pango.EllipsizeMode.MIDDLE;
         new_cell.wrap_mode = Pango.WrapMode.CHAR;
         new_cell.width_chars = 64;
-        new_list = new Gtk.ListStore (2, typeof (string), typeof (Icon?));
+        new_list = new Gtk.ListStore (2, typeof (string), typeof (bool));
         new_file_names = new Gtk.TreeView.with_model (new_list);
-        var text_col = new_file_names.insert_column_with_attributes (
-            -1, "NEW", new_cell,
-            "text", 0,
-            "sensitive", 1
+        var text_col = new Gtk.TreeViewColumn.with_attributes (
+            "NEW", new_cell,
+            "text", 0
         );
+
+        text_col.set_cell_data_func (new_cell, (col, cell, model, iter) => {
+            bool invalid;
+            model.@get (iter, 1, out invalid);
+            new_cell.sensitive = !invalid;
+        });
+
+        new_file_names.insert_column (text_col, 0);
+
         new_file_names.insert_column_with_attributes (
             -1, "VALID", invalid_renderer,
-            "gicon", 1
+            "visible", 1
         );
         new_file_names.headers_visible = false;
 
@@ -432,19 +443,20 @@ public class Renamer : Gtk.Grid {
             }
 
             var final_name = output_name.concat (extension);
-            bool name_valid = true;
+            bool name_invalid = false;
 
             if (final_name == previous_final_name ||
-                final_name == file_name) {
+                final_name == file_name ||
+                invalid_name (final_name, file_name)) {
 
-                warning ("blank or duplicate name");
-                name_valid = false;
+                debug ("blank or duplicate or existing filename");
+                name_invalid = true;
                 can_rename = false;
                 /* TODO Visual indication of problem output name */
             }
 
             new_list.append (out new_iter);
-            new_list.@set (new_iter, 0, final_name, 1, name_valid ? null : invalid_icon, -1);
+            new_list.@set (new_iter, 0, final_name, 1, name_invalid);
 
             previous_final_name = final_name;
             index++;
@@ -510,5 +522,22 @@ public class Renamer : Gtk.Grid {
         }
 
         return res;
+    }
+
+    private bool invalid_name (string new_name, string input_name) {
+        var old_file = file_map.@get (input_name);
+        if (old_file == null) {
+            return true;
+        }
+
+        var new_file = File.new_for_path (
+            Path.build_filename (old_file.get_parent ().get_path (), new_name)
+        );
+
+        if (new_file.query_exists ()) {
+            return true;
+        }
+
+        return false;
     }
 }
