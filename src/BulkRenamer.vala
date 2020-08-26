@@ -124,7 +124,7 @@ public class Renamer : Gtk.Grid {
 
         var add_button = new Gtk.MenuButton ();
         add_button.valign = Gtk.Align.CENTER;
-        add_button.image = new Gtk.Image.from_icon_name ("list-add-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        add_button.image = new Gtk.Image.from_icon_name ("add", Gtk.IconSize.DND);
         add_button.tooltip_text = _("Add another modifier");
         add_button.sensitive = true;
 
