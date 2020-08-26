@@ -69,50 +69,66 @@ public class Renamer : Gtk.Grid {
 
         var base_name_label = new Granite.HeaderLabel (_("Base"));
         base_name_label.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
-        base_name_combo = new Gtk.ComboBoxText ();
-        base_name_combo.valign = Gtk.Align.CENTER;
+
+        base_name_combo = new Gtk.ComboBoxText () {
+            valign = Gtk.Align.CENTER
+        };
         base_name_combo.insert (RenameBase.ORIGINAL, "ORIGINAL", RenameBase.ORIGINAL.to_string ());
         base_name_combo.insert (RenameBase.CUSTOM, "CUSTOM", RenameBase.CUSTOM.to_string ());
 
-        base_name_entry = new Gtk.Entry ();
-        base_name_entry.placeholder_text = _("Enter naming scheme");
-        base_name_entry.hexpand = false;
-        base_name_entry.set_max_width_chars (64);
-        base_name_entry.valign = Gtk.Align.CENTER;
+        base_name_entry = new Gtk.Entry () {
+            placeholder_text = _("Enter naming scheme"),
+            hexpand = false,
+            max_width_chars = 64,
+            valign = Gtk.Align.CENTER
+        };
 
-        var base_name_entry_revealer = new Gtk.Revealer ();
+        var base_name_entry_revealer = new Gtk.Revealer () {
+            vexpand = false
+        };
         base_name_entry_revealer.add (base_name_entry);
-        base_name_entry_revealer.vexpand = false;
+
         var sort_by_label = new Gtk.Label (_("Sort by:"));
-        sort_by_combo = new Gtk.ComboBoxText ();
-        sort_by_combo.valign = Gtk.Align.CENTER;
-        sort_by_combo.margin = 3;
+
+        sort_by_combo = new Gtk.ComboBoxText () {
+            valign = Gtk.Align.CENTER,
+            margin = 3
+        };
         sort_by_combo.insert (RenameSortBy.NAME, "NAME", RenameSortBy.NAME.to_string ());
         sort_by_combo.insert (RenameSortBy.CREATED, "CREATED", RenameSortBy.CREATED.to_string ());
         sort_by_combo.insert (RenameSortBy.MODIFIED, "MODIFIED", RenameSortBy.MODIFIED.to_string ());
         sort_by_combo.set_active (RenameSortBy.NAME);
 
-        var sort_by_grid = new Gtk.Grid ();
-        sort_by_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        sort_by_grid.column_spacing = 6;
+        var sort_by_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 6,
+            halign = Gtk.Align.END,
+            valign = Gtk.Align.CENTER
+        };
         sort_by_grid.add (sort_by_label);
         sort_by_grid.add (sort_by_combo);
 
         var sort_type_label = new Gtk.Label (_("Reverse"));
-        sort_type_switch = new Gtk.Switch ();
-        sort_type_switch.valign = Gtk.Align.CENTER;
 
-        var sort_type_grid = new Gtk.Grid ();
-        sort_type_grid.margin = 3;
-        sort_type_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        sort_type_grid.column_spacing = 6;
+        sort_type_switch = new Gtk.Switch () {
+            valign = Gtk.Align.CENTER
+        };
+
+        var sort_type_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 6,
+            halign = Gtk.Align.END,
+            valign = Gtk.Align.CENTER,
+            margin = 3
+        };
         sort_type_grid.add (sort_type_switch);
         sort_type_grid.add (sort_type_label);
 
-        var controls_grid = new Gtk.Grid ();
-        controls_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        controls_grid.column_spacing = 12;
-        controls_grid.margin_bottom = 12;
+        var controls_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 12,
+            margin_bottom = 12
+        };
 
         controls_grid.attach (base_name_label, 0, 0, 2, 1);
         controls_grid.attach (base_name_combo, 0, 1, 1, 1);
@@ -123,65 +139,74 @@ public class Renamer : Gtk.Grid {
 
         modifier_listbox = new Gtk.ListBox ();
 
-        var add_button = new Gtk.MenuButton ();
-        add_button.valign = Gtk.Align.CENTER;
-        add_button.image = new Gtk.Image.from_icon_name ("add", Gtk.IconSize.DND);
-        add_button.tooltip_text = _("Add another modifier");
-        add_button.sensitive = true;
+        var add_button = new Gtk.MenuButton () {
+            valign = Gtk.Align.CENTER,
+            image = new Gtk.Image.from_icon_name ("add", Gtk.IconSize.DND),
+            tooltip_text = _("Add another modifier"),
+            sensitive = true
+        };
         add_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
 
-        var action_bar = new Gtk.ActionBar ();
-        action_bar.margin_top = 12;
+        var action_bar = new Gtk.ActionBar () {
+            margin_top = 12
+        };
         action_bar.get_style_context ().add_class (Gtk.STYLE_CLASS_INLINE_TOOLBAR);
         action_bar.pack_start (add_button);
 
-        modifier_grid = new Gtk.Grid ();
-        modifier_grid.orientation = Gtk.Orientation.VERTICAL;
-        modifier_grid.margin_bottom = 12;
-        modifier_grid.row_spacing = 0;
+        modifier_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.VERTICAL,
+            margin_bottom = 12,
+            row_spacing = 0
+        };
         modifier_grid.add (modifiers_label);
         modifier_grid.add (modifier_listbox);
         modifier_grid.add (action_bar);
 
-        var cell = new Gtk.CellRendererText ();
-        cell.ellipsize = Pango.EllipsizeMode.MIDDLE;
-        cell.wrap_mode = Pango.WrapMode.CHAR;
-        cell.width_chars = 64;
+        var cell = new Gtk.CellRendererText () {
+            ellipsize = Pango.EllipsizeMode.MIDDLE,
+            wrap_mode = Pango.WrapMode.CHAR,
+            width_chars = 64
+        };
 
         old_list = new Gtk.ListStore (1, typeof (string));
         old_list.set_default_sort_func (old_list_sorter);
         old_list.set_sort_column_id (Gtk.SortColumn.DEFAULT, Gtk.SortType.ASCENDING);
 
-        old_file_names = new Gtk.TreeView.with_model (old_list);
+        old_file_names = new Gtk.TreeView.with_model (old_list) {
+            hexpand = true,
+            headers_visible = false
+        };
         old_file_names.insert_column_with_attributes (-1, "ORIGINAL", cell, "text", 0);
 
-        old_file_names.hexpand = true;
-        old_file_names.set_headers_visible (false);
-
-        var old_files_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-        old_files_header.hexpand = true;
-        var original_label = new Granite.HeaderLabel (_("Original Names"));
+        var original_label = new Granite.HeaderLabel (_("Original Names")) {
+            valign = Gtk.Align.CENTER
+        };
         original_label.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
-        original_label.valign = Gtk.Align.CENTER;
+
+        var old_files_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6) {
+            hexpand = true
+        };
         old_files_header.add (original_label);
-        sort_by_grid.halign = Gtk.Align.END;
-        sort_by_grid.valign = Gtk.Align.CENTER;
-        sort_type_grid.halign = Gtk.Align.END;
-        sort_type_grid.valign = Gtk.Align.CENTER;
+
+
         old_files_header.pack_end (sort_type_grid, false, false, 6);
         old_files_header.pack_end (sort_by_grid, false, false, 6);
 
-        var old_scrolled_window = new Gtk.ScrolledWindow (null, null);
-        old_scrolled_window.hexpand = true;
+        var old_scrolled_window = new Gtk.ScrolledWindow (null, null) {
+            hexpand = true,
+            min_content_height = 300,
+            max_content_height = 2000
+        };
+
         old_scrolled_window.add (old_file_names);
-        old_scrolled_window.set_min_content_height (300);
-        old_scrolled_window.set_max_content_height (2000);
+
 
         var vadj = old_scrolled_window.get_vadjustment ();
 
-        var old_files_grid = new Gtk.Grid ();
-        old_files_grid.valign = Gtk.Align.START;
-        old_files_grid.orientation = Gtk.Orientation.VERTICAL;
+        var old_files_grid = new Gtk.Grid () {
+            valign = Gtk.Align.START,
+            orientation = Gtk.Orientation.VERTICAL
+        };
         old_files_grid.add (old_files_header);
         old_files_grid.add (old_scrolled_window);
 
@@ -191,10 +216,12 @@ public class Renamer : Gtk.Grid {
             xalign = 1.0f
         };
 
-        var new_cell = new Gtk.CellRendererText ();
-        new_cell.ellipsize = Pango.EllipsizeMode.MIDDLE;
-        new_cell.wrap_mode = Pango.WrapMode.CHAR;
-        new_cell.width_chars = 64;
+        var new_cell = new Gtk.CellRendererText () {
+            ellipsize = Pango.EllipsizeMode.MIDDLE,
+            wrap_mode = Pango.WrapMode.CHAR,
+            width_chars = 64
+        };
+
         new_list = new Gtk.ListStore (2, typeof (string), typeof (bool));
         new_file_names = new Gtk.TreeView.with_model (new_list);
         var text_col = new Gtk.TreeViewColumn.with_attributes (
@@ -216,31 +243,35 @@ public class Renamer : Gtk.Grid {
         );
         new_file_names.headers_visible = false;
 
-        var new_scrolled_window = new Gtk.ScrolledWindow (null, null);
-        new_scrolled_window.hexpand = true;
-        new_scrolled_window.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
-        new_scrolled_window.set_vadjustment (vadj);
+        var new_scrolled_window = new Gtk.ScrolledWindow (null, null) {
+            hexpand = true,
+            vadjustment = vadj,
+            min_content_height = 300,
+            max_content_height = 2000,
+            overlay_scrolling = true
+        };
+
         new_scrolled_window.add (new_file_names);
-        new_scrolled_window.set_min_content_height (300);
-        new_scrolled_window.set_max_content_height (2000);
-        new_scrolled_window.set_overlay_scrolling (true);
+        new_scrolled_window.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
 
         var new_files_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
         var new_label = new Granite.HeaderLabel (_("New Names"));
         new_label.get_style_context (). add_class (Granite.STYLE_CLASS_H2_LABEL);
         new_files_header.add (new_label);
 
-        var new_files_grid = new Gtk.Grid ();
-        new_files_grid.valign = Gtk.Align.END;
-        new_files_grid.orientation = Gtk.Orientation.VERTICAL;
+        var new_files_grid = new Gtk.Grid () {
+            valign = Gtk.Align.END,
+            orientation = Gtk.Orientation.VERTICAL
+        };
         new_files_grid.add (new_files_header);
         new_files_grid.add (new_scrolled_window);
 
-        var lists_grid = new Gtk.Grid ();
-        lists_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        lists_grid.column_spacing = 32;
-        lists_grid.column_homogeneous = true;
-        lists_grid.margin = 12;
+        var lists_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 32,
+            column_homogeneous = true,
+            margin = 12
+        };
         lists_grid.add (old_files_grid);
         lists_grid.add (new_files_grid);
 
@@ -452,7 +483,6 @@ public class Renamer : Gtk.Grid {
                 debug ("blank or duplicate or existing filename");
                 name_invalid = true;
                 can_rename = false;
-                /* TODO Visual indication of problem output name */
             }
 
             new_list.append (out new_iter);

@@ -31,7 +31,6 @@ public class Marlin.Plugins.RenamerMenuItem : Gtk.MenuItem {
     }
 
     public override void activate () {
-warning ("Activate with %u files", files.length);
         var dialog = new RenamerDialog ("", files);
         dialog.run ();
         dialog.destroy ();

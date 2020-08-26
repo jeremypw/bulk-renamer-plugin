@@ -31,21 +31,19 @@ public class RenamerDialog : Gtk.Dialog {
 
     construct {
         deletable = false;
-
-        renamer = new Renamer ();
-        renamer.margin = 12;
-        renamer.set_sort_order (RenameSortBy.NAME, false);
-
-        get_content_area ().add (renamer);
-
         var cancel_button = add_button (_("Cancel"), Gtk.ResponseType.CANCEL);
 
         rename_button = add_button (_("Rename"), Gtk.ResponseType.APPLY);
         rename_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
 
+        renamer = new Renamer ();
+        renamer.margin = 12;
+        renamer.set_sort_order (RenameSortBy.NAME, false);
         renamer.bind_property ("can-rename",
                                 rename_button, "sensitive",
                                 GLib.BindingFlags.DEFAULT | GLib.BindingFlags.SYNC_CREATE);
+
+        get_content_area ().add (renamer);
 
         response.connect ((response_id) => {
             switch (response_id) {
@@ -54,9 +52,11 @@ public class RenamerDialog : Gtk.Dialog {
                         try {
                             renamer.rename_files ();
                         } catch (Error e) {
-                            var dlg = new Granite.MessageDialog ("Error renaming files",
-                                                                 e.message,
-                                                                 new ThemedIcon ("dialog-error"));
+                            var dlg = new Granite.MessageDialog (
+                                "Error renaming files",
+                                e.message,
+                                new ThemedIcon ("dialog-error")
+                            );
                             dlg.run ();
                             dlg.destroy ();
                         }
@@ -98,8 +98,6 @@ public class RenamerDialog : Gtk.Dialog {
 
         show_all ();
     }
-
-
 
     /* Code taken from pantheon-files  Copyright 2015-2020 elementary, Inc. (https://elementary.io) */
     /* Leave standard ASCII alone, else try to get Latin hotkey from keyboard state */
