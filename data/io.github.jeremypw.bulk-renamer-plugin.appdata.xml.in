@@ -61,6 +61,7 @@
                     <li>Apply several rules in sequences</li>
                     <li>See the results before renaming</li>
                     <li>Undo the last rename operation while dialog is open</li>
+                    <li>Dutch translation - thanks to Heimen Stoffels</li>
                 </ul>
             </description>
         </release>
