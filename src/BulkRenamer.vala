@@ -33,6 +33,7 @@ public class Renamer : Gtk.Grid {
     private Gtk.TreeView new_file_names;
     private Gtk.ListStore old_list;
     private Gtk.ListStore new_list;
+    private Icon invalid_icon;
 
     private Gtk.Entry base_name_entry;
     private Gtk.ComboBoxText base_name_combo;
@@ -57,7 +58,7 @@ public class Renamer : Gtk.Grid {
         vexpand = true;
 
         info_map_mutex = Mutex ();
-
+        invalid_icon = new ThemedIcon.with_default_fallbacks ("dialog-warning");
         can_rename = false;
         orientation = Gtk.Orientation.VERTICAL;
         directory = "";
@@ -184,17 +185,24 @@ public class Renamer : Gtk.Grid {
         old_files_grid.add (old_files_header);
         old_files_grid.add (old_scrolled_window);
 
-        var toggle = new Gtk.CellRendererToggle ();
-        toggle.indicator_size = 9;
-        toggle.xalign = 1.0f;
+        var invalid_renderer = new Gtk.CellRendererPixbuf ();
+        invalid_renderer.xalign = 1.0f;
+
         var new_cell = new Gtk.CellRendererText ();
         new_cell.ellipsize = Pango.EllipsizeMode.MIDDLE;
         new_cell.wrap_mode = Pango.WrapMode.CHAR;
         new_cell.width_chars = 64;
-        new_list = new Gtk.ListStore (2, typeof (string), typeof (bool));
+        new_list = new Gtk.ListStore (2, typeof (string), typeof (Icon?));
         new_file_names = new Gtk.TreeView.with_model (new_list);
-        var text_col = new_file_names.insert_column_with_attributes (-1, "NEW", new_cell, "text", 0, "sensitive", 1);
-        new_file_names.insert_column_with_attributes (-1, "VALID", toggle, "active", 1, "visible", 1);
+        var text_col = new_file_names.insert_column_with_attributes (
+            -1, "NEW", new_cell,
+            "text", 0,
+            "sensitive", 1
+        );
+        new_file_names.insert_column_with_attributes (
+            -1, "VALID", invalid_renderer,
+            "gicon", 1
+        );
         new_file_names.headers_visible = false;
 
         var new_scrolled_window = new Gtk.ScrolledWindow (null, null);
@@ -429,14 +437,14 @@ public class Renamer : Gtk.Grid {
             if (final_name == previous_final_name ||
                 final_name == file_name) {
 
-                debug ("blank or duplicate name");
+                warning ("blank or duplicate name");
                 name_valid = false;
                 can_rename = false;
                 /* TODO Visual indication of problem output name */
             }
 
             new_list.append (out new_iter);
-            new_list.@set (new_iter, 0, final_name, 1, name_valid, -1);
+            new_list.@set (new_iter, 0, final_name, 1, name_valid ? null : invalid_icon, -1);
 
             previous_final_name = final_name;
             index++;
