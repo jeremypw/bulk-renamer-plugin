@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010-2017  Vartan Belavejian
- * Copyright (C) 2019      Jeremy Wootten
+ * Copyright (C) 2019-2020     Jeremy Wootten
  *
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -233,26 +233,21 @@ public class Renamer : Gtk.Grid {
         sort_by_combo.changed.connect (() => {
             old_list.set_default_sort_func (old_list_sorter);
 
-            update_view ();
+            schedule_view_update ();
         });
 
         sort_type_switch.notify ["active"].connect (() => {
             old_list.set_default_sort_func (old_list_sorter);
-            update_view ();
+            schedule_view_update ();
         });
 
         base_name_combo.changed.connect (() => {
             base_name_entry_revealer.reveal_child = base_name_combo.get_active () == RenameBase.CUSTOM;
-            update_view ();
+            schedule_view_update ();
         });
 
-        base_name_entry.focus_out_event.connect (() => {
-            update_view ();
-            return Gdk.EVENT_PROPAGATE;
-        });
-
-        base_name_entry.activate.connect (() => {
-            update_view ();
+        base_name_entry.changed.connect (() => {
+            schedule_view_update ();
         });
 
         add_button.clicked.connect (() => {
@@ -307,22 +302,22 @@ public class Renamer : Gtk.Grid {
         }
 
         old_list.set_default_sort_func (old_list_sorter);
-        update_view ();
+        schedule_view_update ();
     }
 
     public void add_modifier (bool allow_remove) {
         var mod = new Modifier (allow_remove);
         modifier_chain.add (mod);
         modifier_listbox.add (mod);
-        mod.update_request.connect (update_view);
+        mod.update_request.connect (schedule_view_update);
         mod.remove_request.connect (() => {
             modifier_chain.remove (mod);
             mod.destroy ();
             queue_draw ();
-            update_view ();
+            schedule_view_update ();
         });
 
-        update_view ();
+        schedule_view_update ();
     }
 
     public void reset () {
@@ -339,7 +334,7 @@ public class Renamer : Gtk.Grid {
             }
         }
 
-        update_view ();
+        schedule_view_update ();
     }
 
     public void set_sort_order (RenameSortBy sort_by, bool reversed) {
@@ -381,25 +376,26 @@ public class Renamer : Gtk.Grid {
     }
 
     private uint view_update_timeout_id = 0;
-    public void schedule_view_update () {
-        var delay = int.min (number_of_files * modifier_chain.size, 500);
-        if (delay < 20) {
-            update_view ();
-        } else {
-            if (view_update_timeout_id > 0) {
-                Source.remove (view_update_timeout_id);
-            }
-
-            view_update_timeout_id = Timeout.add (delay, () => {
-                update_view ();
-                view_update_timeout_id = 0;
-                return Source.REMOVE;
-            });
+    private void schedule_view_update () {
+        if (view_update_timeout_id > 0) {
+            Source.remove (view_update_timeout_id);
         }
 
+        view_update_timeout_id = Timeout.add (250, () => {
+            if (updating) {
+                return Source.CONTINUE;
+            }
+
+            view_update_timeout_id = 0;
+            update_view ();
+
+            return Source.REMOVE;
+        });
     }
 
+    private bool updating = false;
     private void update_view () {
+        updating = true;
         can_rename = true;
         int index = 0;
         string output_name = "";
@@ -445,6 +441,8 @@ public class Renamer : Gtk.Grid {
             index++;
             return false;
         });
+
+        updating = false;
     }
 
     private string strip_extension (string filename, out string extension) {

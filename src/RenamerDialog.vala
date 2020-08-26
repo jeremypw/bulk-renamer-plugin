@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010-2017  Vartan Belavejian
- * Copyright (C) 2019      Jeremy Wootten
+ * Copyright (C) 2019-2020 Jeremy Wootten
  *
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

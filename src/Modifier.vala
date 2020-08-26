@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019      Jeremy Wootten
+ * Copyright (C) 2019-2020      Jeremy Wootten
  *
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,42 +43,55 @@ public class Modifier : Gtk.ListBoxRow {
     construct {
         margin_top = 3;
         margin_bottom = 3;
+        hexpand = true;
 
-        var grid = new Gtk.Grid ();
-        grid.orientation = Gtk.Orientation.HORIZONTAL;
-        grid.column_spacing = 12;
+        var grid = new Gtk.Grid () {
+            hexpand = true,
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 12
+        };
 
-        mode_combo = new Gtk.ComboBoxText ();
-        mode_combo.valign = Gtk.Align.CENTER;
+        mode_combo = new Gtk.ComboBoxText () {
+            valign = Gtk.Align.CENTER
+        };
         mode_combo.insert (RenameMode.TEXT, "TEXT", RenameMode.TEXT.to_string ());
         mode_combo.insert (RenameMode.NUMBER, "NUMBER", RenameMode.NUMBER.to_string ());
         mode_combo.insert (RenameMode.DATETIME, "DATETIME", RenameMode.DATETIME.to_string ());
 
-        text_entry = new Gtk.Entry ();
-        text_entry.set_max_width_chars (64);
-        text_entry.vexpand = false;
-        text_entry.hexpand = false;
+        text_entry = new Gtk.Entry () {
+            vexpand = false,
+            hexpand = false,
+            max_length = 64,
+            max_width_chars = 64
+        };
 
         var start_number_label = new Gtk.Label (_("Start Number"));
-        start_number_spin_button = new Gtk.SpinButton.with_range (0, int.MAX, 1);
-        start_number_spin_button.digits = 0;
+        start_number_spin_button = new Gtk.SpinButton.with_range (0, int.MAX, 1) {
+            digits = 0
+        };
         start_number_spin_button.set_value (0.0);
 
         var digits_label = new Gtk.Label (_("Digits"));
-        digits_spin_button = new Gtk.SpinButton.with_range (0, 5, 1);
-        digits_spin_button.digits = 0;
+
+        digits_spin_button = new Gtk.SpinButton.with_range (0, 5, 1) {
+            digits = 0
+        };
+
         digits_spin_button.set_value (1.0);
 
-        var digits_grid = new Gtk.Grid ();
-        digits_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        digits_grid.column_spacing = 6;
+        var digits_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 6
+        };
+
         digits_grid.add (start_number_label);
         digits_grid.add (start_number_spin_button);
         digits_grid.add (digits_label);
         digits_grid.add (digits_spin_button);
 
-        date_format_combo = new Gtk.ComboBoxText ();
-        date_format_combo.valign = Gtk.Align.CENTER;
+        date_format_combo = new Gtk.ComboBoxText () {
+            valign = Gtk.Align.CENTER
+        };
         date_format_combo.insert (RenameDateFormat.DEFAULT_DATE, "DEFAULT_DATE",
                                   RenameDateFormat.DEFAULT_DATE.to_string ());
 
@@ -94,53 +107,72 @@ public class Modifier : Gtk.ListBoxRow {
         date_format_combo.insert (RenameDateFormat.ISO_DATETIME, "ISO_DATETIME",
                                   RenameDateFormat.ISO_DATETIME.to_string ());
 
-        date_type_combo = new Gtk.ComboBoxText ();
-        date_type_combo.valign = Gtk.Align.CENTER;
+        date_type_combo = new Gtk.ComboBoxText () {
+            valign = Gtk.Align.CENTER
+        };
         date_type_combo.insert (RenameDateType.NOW, "NOW", RenameDateType.NOW.to_string ());
         date_type_combo.insert (RenameDateType.CHOOSE, "CHOOSE", RenameDateType.CHOOSE.to_string ());
 
         date_picker = new Granite.Widgets.DatePicker ();
-        date_picker_revealer = new Gtk.Revealer ();
+        date_picker_revealer = new Gtk.Revealer () {
+            reveal_child = false
+        };
         date_picker_revealer.add (date_picker);
-        date_picker_revealer.reveal_child = false;
 
-        var date_time_grid = new Gtk.Grid ();
-        date_time_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        date_time_grid.column_spacing = 6;
+        var date_time_grid = new Gtk.Grid () {
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 6
+        };
         date_time_grid.add (date_format_combo);
         date_time_grid.add (date_type_combo);
         date_time_grid.add (date_picker_revealer);
 
-        mode_stack = new Gtk.Stack ();
-        mode_stack.valign = Gtk.Align.CENTER;
-        mode_stack.set_homogeneous (false);
-        mode_stack.vexpand = false;
-        mode_stack.hexpand = false;
-
+        mode_stack = new Gtk.Stack () {
+            valign = Gtk.Align.CENTER,
+            homogeneous =false,
+            vexpand = false,
+            hexpand = false
+        };
         mode_stack.add_named (digits_grid, "NUMBER");
         mode_stack.add_named (text_entry, "TEXT");
         mode_stack.add_named (date_time_grid, "DATETIME");
         mode_stack.set_visible_child_name ("NUMBER");
 
-        separator_entry = new Gtk.Entry ();
-        separator_entry.placeholder_text = _("Separator");
-        separator_entry.text = "";
-        var separator_label = new Gtk.Label (_("Separator:"));
-        separator_label.hexpand = true;
-        separator_label.halign = Gtk.Align.END;
+        separator_entry = new Gtk.Entry () {
+            halign = Gtk.Align.END,
+            hexpand = true,
+            max_length = 16,
+            placeholder_text = _("Separator"),
+            text = ""
+        };
 
-        var separator_grid = new Gtk.Grid ();
-        separator_grid.margin_start = 12;
-        separator_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        separator_grid.column_spacing = 6;
+        var separator_label = new Gtk.Label (_("Separator:")) {
+            halign = Gtk.Align.END,
+            hexpand = false
+        };
+
+        var separator_grid = new Gtk.Grid () {
+            hexpand = true,
+            halign = Gtk.Align.END,
+            margin_start = 12,
+            orientation = Gtk.Orientation.HORIZONTAL,
+            column_spacing = 6
+        };
         separator_grid.add (separator_label);
         separator_grid.add (separator_entry);
 
-        search_entry = new Gtk.Entry ();
-        search_entry.placeholder_text = _("Target text");
+        search_entry = new Gtk.Entry () {
+            hexpand = true,
+            halign = Gtk.Align.END,
+            max_length = 64,
+            max_width_chars = 64,
+            placeholder_text = _("Target text to be replaced")
+        };
 
-        position_stack = new Gtk.Stack ();
-        position_stack.valign = Gtk.Align.CENTER;
+        position_stack = new Gtk.Stack () {
+            hexpand = true,
+            valign = Gtk.Align.END
+        };
         position_stack.add_named (separator_grid, "SEPARATOR");
         position_stack.add_named (search_entry, "TARGET");
 
@@ -150,25 +182,23 @@ public class Modifier : Gtk.ListBoxRow {
         position_combo.insert (RenamePosition.REPLACE, "DATETIME", RenamePosition.REPLACE.to_string ());
         position_combo.active = RenamePosition.SUFFIX;
 
-        var position_grid = new Gtk.Grid ();
-        position_grid.orientation = Gtk.Orientation.HORIZONTAL;
-        position_grid.column_spacing = 6;
-        position_grid.valign = Gtk.Align.CENTER;
-        position_grid.add (position_stack);
-        position_grid.add (position_combo);
+        var remove_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.SMALL_TOOLBAR) {
+            halign = Gtk.Align.END,
+            valign = Gtk.Align.CENTER,
+            tooltip_text = (_("Remove this modification"))
 
-        var remove_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        };
         remove_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-        remove_button.halign = Gtk.Align.END;
-        remove_button.valign = Gtk.Align.CENTER;
-        remove_button.set_tooltip_text (_("Remove this modification"));
 
-        remove_revealer = new Gtk.Revealer ();
+        remove_revealer = new Gtk.Revealer () {
+            halign = Gtk.Align.END
+        };
         remove_revealer.add (remove_button);
 
+        grid.add (position_combo);
         grid.add (mode_combo);
         grid.add (mode_stack);
-        grid.add (position_grid);
+        grid.add (position_stack);
         grid.add (remove_revealer);
 
         add (grid);
@@ -210,31 +240,17 @@ public class Modifier : Gtk.ListBoxRow {
             update_request ();
         });
 
-        text_entry.focus_out_event.connect (() => {
-            if (text_entry.text != "") {
-                update_request ();
-            }
-
-            return Gdk.EVENT_PROPAGATE;
-        });
-
-        text_entry.activate.connect (() => {
-            if (text_entry.text != "") {
-                update_request ();
-            }
-        });
-
-        separator_entry.focus_out_event.connect (() => {
-            update_request ();
-            return Gdk.EVENT_PROPAGATE;
-        });
-
-        separator_entry.activate.connect (() => {
+        text_entry.changed.connect (() => {
             update_request ();
         });
 
+        separator_entry.changed.connect (() => {
+            update_request ();
+        });
+
+        text_entry.placeholder_text = ((RenamePosition)(position_combo.get_active ())).to_placeholder ();
         position_combo.changed.connect (() => {
-            text_entry.placeholder_text = ((RenamePosition)(position_combo.get_active ())).to_string ();
+            text_entry.placeholder_text = ((RenamePosition)(position_combo.get_active ())).to_placeholder ();
             update_request ();
         });
 
