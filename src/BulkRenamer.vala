@@ -127,6 +127,7 @@ public class Renamer : Gtk.Grid {
         add_button.image = new Gtk.Image.from_icon_name ("add", Gtk.IconSize.DND);
         add_button.tooltip_text = _("Add another modifier");
         add_button.sensitive = true;
+        add_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
 
         var action_bar = new Gtk.ActionBar ();
         action_bar.margin_top = 12;

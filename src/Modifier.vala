@@ -172,7 +172,7 @@ public class Modifier : Gtk.ListBoxRow {
         position_combo.insert (RenamePosition.REPLACE, "DATETIME", RenamePosition.REPLACE.to_string ());
         position_combo.active = RenamePosition.SUFFIX;
 
-        var remove_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.SMALL_TOOLBAR) {
+        var remove_button = new Gtk.Button.from_icon_name ("process-stop", Gtk.IconSize.LARGE_TOOLBAR) {
             halign = Gtk.Align.END,
             valign = Gtk.Align.CENTER,
             tooltip_text = (_("Remove this modification"))
