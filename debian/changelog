@@ -1,0 +1,11 @@
+io.github.jeremypw.bulk-renamer-plugin (1.0.0) bionic; urgency=low
+
+  * Initial release as plugin for io.elementary.files
+  * Use original name or a new constant name as a basis for renaming
+  * Add a number sequence, date or text before or after the basename
+  * Choose an arbitrary separator for new text
+  * Replace a specified part of the name with other text
+  * Apply several rules in sequence
+  * See the results before renaming
+
+ -- Jeremy Wootten <jeremywootten@gmail.com>  Sat, 05 Sep 2020 15:00:00 +0000

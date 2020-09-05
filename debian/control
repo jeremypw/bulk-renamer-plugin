@@ -1,0 +1,26 @@
+Source: io.github.jeremypw.bulk-renamer-plugin
+Maintainer: Jeremy Paul Wootten <jeremywootten@gmail.com>
+Section: x11
+Priority: optional
+Build-Depends: meson (>= 0.42.0),
+               desktop-file-utils,
+               appstream,
+               debhelper (>= 9),
+               valac (>= 0.30),
+               libglib2.0-dev (>= 2.48),
+               libgtk-3-dev (>= 3.22),
+               libgee-0.8-dev (>= 0.18),
+               libgranite-dev (>= 5.2.0)
+Standards-Version: 4.1.1
+
+Package: io.github.jeremypw.bulk-renamer-plugin
+Architecture: any
+Description: Plugin to the elementaryos filemanager for renaming multiple files.
+ Starting from the original or a constant new basename, multiple modifications
+ can be applied in sequence using number sequences, dates, added text or
+ replaced text, which may be placed before or after the name, with or without
+ chosen separators.
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: pantheon-files
+
+
