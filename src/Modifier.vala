@@ -45,7 +45,6 @@ public class Modifier : Gtk.ListBoxRow {
         hexpand = true;
 
         var grid = new Gtk.Grid () {
-            hexpand = true,
             orientation = Gtk.Orientation.HORIZONTAL,
             column_spacing = 12
         };
@@ -255,7 +254,6 @@ public class Modifier : Gtk.ListBoxRow {
         search_entry.text = "";
 
         date_format_combo.set_active (RenameDateFormat.DEFAULT_DATE);
-//        date_type_combo.set_active (RenameDateType.NOW);
     }
 
     public Modifier (bool _allow_remove) {

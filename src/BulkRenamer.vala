@@ -55,8 +55,6 @@ public class Renamer : Gtk.Grid {
     }
 
     construct {
-        vexpand = true;
-
         info_map_mutex = Mutex ();
         invalid_icon = new ThemedIcon.with_default_fallbacks ("dialog-warning");
         can_rename = false;
@@ -183,11 +181,8 @@ public class Renamer : Gtk.Grid {
         };
         original_label.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
 
-        var old_files_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6) {
-            hexpand = true
-        };
+        var old_files_header = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
         old_files_header.add (original_label);
-
 
         old_files_header.pack_end (sort_type_grid, false, false, 6);
         old_files_header.pack_end (sort_by_grid, false, false, 6);

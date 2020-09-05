@@ -30,7 +30,8 @@ public class RenamerDialog : Gtk.Dialog {
     }
 
     construct {
-        deletable = false;
+        deletable = true;
+        set_title (_("Bulk Renamer"));
         var cancel_button = add_button (_("Cancel"), Gtk.ResponseType.CANCEL);
 
         rename_button = add_button (_("Rename"), Gtk.ResponseType.APPLY);
@@ -94,6 +95,14 @@ public class RenamerDialog : Gtk.Dialog {
 
 
             return false;
+        });
+
+        realize.connect (() => {
+            resize (500, 300);  //Stops the window being larger than necessary
+        });
+
+        delete_event.connect (() => {
+            response (Gtk.ResponseType.REJECT);
         });
 
         show_all ();
