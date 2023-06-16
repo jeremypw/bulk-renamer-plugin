@@ -1,5 +1,4 @@
 i18n.merge_file (
-    'appdata',
     input: meson.project_name () + '.appdata.xml.in',
     output: meson.project_name () + '.appdata.xml',
     install: true,

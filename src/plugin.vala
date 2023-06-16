@@ -7,12 +7,12 @@
     Copyright (c) Lucas Baudin 2011 <xapantu@gmail.com>
     Copyright (c) 2013-2018 elementary LLC <https://elementary.io>
 
-    Marlin is free software: you can redistribute it and/or modify it
+    Files is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    Marlin is distributed in the hope that it will be useful, but
+    Files is distributed in the hope that it will be useful, but
     WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
     See the GNU General Public License for more details.
@@ -21,10 +21,10 @@
     with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-public class Marlin.Plugins.RenamerMenuItem : Gtk.MenuItem {
-    private File[] files;
+public class Files.Plugins.RenamerMenuItem : Gtk.MenuItem {
+    private GLib.File[] files;
 
-    public RenamerMenuItem (File[] files) {
+    public RenamerMenuItem (GLib.File[] files) {
         this.files = files;
 
         label = _("Rename Selected Files");
@@ -37,17 +37,17 @@ public class Marlin.Plugins.RenamerMenuItem : Gtk.MenuItem {
     }
 }
 
-public class Marlin.Plugins.BulkRenamer : Marlin.Plugins.Base {
+public class Files.Plugins.BulkRenamer : Files.Plugins.Base {
     private Gtk.Menu menu;
-    private GOF.File current_directory = null;
+    private Files.File current_directory = null;
 
     public BulkRenamer () {
     }
 
-    public override void context_menu (Gtk.Widget widget, List<GOF.File> gof_files) {
+    public override void context_menu (Gtk.Widget widget, List<Files.File> gof_files) {
         menu = widget as Gtk.Menu;
 
-        File[] files = null;
+        GLib.File[] files = null;
         if (gof_files == null || gof_files.next == null) {
             return;
         }
@@ -55,7 +55,7 @@ public class Marlin.Plugins.BulkRenamer : Marlin.Plugins.Base {
         /* We cannot assume all target files are in same folder (maybe recent folder in which case the view
             passes the original locations.  We also do not want to batch rename mixtures of files and folders.
         */
-        unowned List<GOF.File> remaining_files = gof_files.first ();
+        unowned List<Files.File> remaining_files = gof_files.first ();
         GLib.File? parent_folder = remaining_files.data.directory;
         bool first_is_folder = remaining_files.data.is_folder ();
         GLib. File? first_folder = parent_folder.dup ();
@@ -93,7 +93,7 @@ public class Marlin.Plugins.BulkRenamer : Marlin.Plugins.Base {
         add_menuitem (menu, menu_item);
     }
 
-    public override void directory_loaded (Gtk.ApplicationWindow window, GOF.AbstractSlot view, GOF.File directory) {
+    public override void directory_loaded (Gtk.ApplicationWindow window, Files.AbstractSlot view, Files.File directory) {
         current_directory = directory;
     }
 
@@ -104,10 +104,10 @@ public class Marlin.Plugins.BulkRenamer : Marlin.Plugins.Base {
     }
 
 
-    private static File[] get_file_array (List<GOF.File> files) {
-        File[] file_array = new File[0];
+    private static GLib.File[] get_file_array (List<Files.File> files) {
+        GLib.File[] file_array = new GLib.File[0];
 
-        foreach (unowned GOF.File file in files) {
+        foreach (unowned Files.File file in files) {
             if (file.location != null) {
                 if (file.location.get_uri_scheme () == "recent") {
                     file_array += GLib.File.new_for_uri (file.get_display_target_uri ());
@@ -121,6 +121,6 @@ public class Marlin.Plugins.BulkRenamer : Marlin.Plugins.Base {
     }
 }
 
-public Marlin.Plugins.Base module_init () {
-    return new Marlin.Plugins.BulkRenamer ();
+public Files.Plugins.Base module_init () {
+    return new Files.Plugins.BulkRenamer ();
 }
