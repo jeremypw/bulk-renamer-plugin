@@ -29,3 +29,5 @@ ninja
 You will now find that the context menu in Pantheon Files shows an extra entry when more than one file item
 has been selected. Clicking on this option results in the renamer window being launched with the selected files
 appearing in the "Old Name" list.
+
+NOTE: Elementaryos Files incorporates a simplified version of this app since version 6.4
