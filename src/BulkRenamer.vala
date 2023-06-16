@@ -410,9 +410,9 @@ public class Renamer : Gtk.Grid {
             var file = file_map.@get (input_name);
 
             if (file != null) {
-                    PF.FileUtils.set_file_display_name.begin (file, output_name, null, (obj, res) => {
+                    Files.FileUtils.set_file_display_name.begin (file, output_name, null, (obj, res) => {
                         try {
-                            PF.FileUtils.set_file_display_name.end (res);
+                            Files.FileUtils.set_file_display_name.end (res);
                         } catch (Error e) {} // Warning dialog already shown
                     });
             }
